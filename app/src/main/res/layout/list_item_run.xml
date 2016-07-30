@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/run_list_item_statusImgButton"
+        android:layout_above="@+id/run_list_item_startTextView"
+        android:src="@android:drawable/presence_online"
+        android:scaleType="fitXY"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/run_list_item_nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_toRightOf="@+id/run_list_item_statusImgButton"
+        android:text="Run name"/>
+
+    <TextView android:id="@+id/run_list_item_startTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/run_list_item_nameTextView"
+        android:text="Start Time"/>
+
+    <TextView
+        android:id="@+id/run_list_item_durationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Duration"
+        android:layout_below="@+id/run_list_item_nameTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>
+
+
+
+
+
+
