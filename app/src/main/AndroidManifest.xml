@@ -29,10 +29,10 @@
             android:theme="@style/AppTheme">
         </activity>
         <activity
-            android:name="com.hpe.oo.android.ui.RunPagerActivity"
-            android:label="@string/run_management_name"
+            android:name="com.hpe.oo.android.ui.InputListActivity"
+            android:theme="@style/AppTheme"
             android:parentActivityName="com.hpe.oo.android.ui.RunListActivity"
-            android:theme="@style/AppTheme">
+            >
         </activity>
         <activity
             android:name="com.hpe.oo.android.ui.FlowLaunchActivity"

@@ -59,18 +59,12 @@ public class InputListFragment extends Fragment {
             View view = inflater.inflate(R.layout.fragment_input_list, container, false);
             mInputRecyclerView = (RecyclerView) view.findViewById(R.id.input_recycler_view);
             mInputRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            updateUI();
             return view;
         }
 
         @Override
         public void onResume() {
             super.onResume();
-
-            updateUI();
-        }
-
-        private void updateUI() {
         }
 
         private class FlowInputHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -82,7 +76,7 @@ public class InputListFragment extends Fragment {
                 super(itemView);
                 itemView.setOnClickListener(this);
 
-                mNameTextView   = (TextView)   itemView.findViewById(R.id.input_list_item_nameTextView);
+                mNameTextView   = (TextView) itemView.findViewById(R.id.input_list_item_nameTextView);
                 mValueTextView  = (EditText) itemView.findViewById(R.id.input_list_item_valueTextField);
             }
 
