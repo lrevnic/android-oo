@@ -77,7 +77,7 @@ public class RunsDownloader<T> extends HandlerThread {
         }
 
             /*
-            List<Run> runs = new OoConnector("http://16.60.160.67:8080/oo/rest/v2").getUrlBytes();
+            List<Run> runs = new OOConnector("http://16.60.160.67:8080/oo/rest/v2").getUrlBytes();
             mResponseHandler.post(new Runnable() {
                 @Override
                 public void run() {

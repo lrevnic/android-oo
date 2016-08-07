@@ -7,7 +7,7 @@ import android.util.LruCache;
 
 import com.hpe.oo.android.model.Flow;
 import com.hpe.oo.android.model.Run;
-import com.hpe.oo.android.model.RunExecutionLog;
+import com.hpe.oo.android.model.RunLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,36 +25,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class OoConnector {
-    public  static final    String TAG                    = "OoConnector";
+public class OOConnector {
+    public  static final    String TAG                    = "OOConnector";
 
     private LruCache<String, Flow>  mFlowsCache;
     private LruCache<Long, Run>     mRunsCache;
     private static final    int     CACHE_SIZE              = 2 * 1024 * 1024; //2 MiB
 
-    private static          OoConnector                     sOoConnector;
+    private static OOConnector sOOConnector;
 
     private                 String  mUrl;
     private                 String  mUsername;
     private                 String  mPassword;
 
 
-    private OoConnector() {
+    private OOConnector() {
     }
 
-    private OoConnector(String endpoint, String username, String password) {
+    private OOConnector(String endpoint, String username, String password) {
         mUrl      = endpoint;
         mUsername = username;
         mPassword = password;
     }
 
 
-    public static OoConnector newInstance() {
-        if (sOoConnector == null) {
-            sOoConnector = new OoConnector();
+    public static OOConnector newInstance() {
+        if (sOOConnector == null) {
+            sOOConnector = new OOConnector();
         }
 
-        return sOoConnector;
+        return sOOConnector;
     }
 
     private final class REST {
@@ -79,7 +79,7 @@ public class OoConnector {
 
     public boolean login(String endpoint, String username, String password) {
         try {
-            sOoConnector = new OoConnector(endpoint, username, password);
+            sOOConnector = new OOConnector(endpoint, username, password);
 
             URL url = new URL(endpoint + REST.SEPARATOR + REST.BASE_PATH + REST.SEPARATOR + REST.VERSION_RESOURCE);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -176,10 +176,10 @@ public class OoConnector {
         return run;
     }
 
-    public RunExecutionLog getRunExecutionLog(Long id) {
-        JSONObject jsonObj = fetchObject(buildUrlLog(REST.RUNS_RESOURCE, id));
+    public RunLog getRunExecutionLog(Long id) {
+        JSONObject jsonObj = fetchJSONObject(buildUrlLog(REST.RUNS_RESOURCE, id));
 
-        RunExecutionLog executionLog = new RunExecutionLog();
+        RunLog executionLog = new RunLog();
 
         try {
             executionLog.setExecutionSummary(jsonObj.getJSONObject("executionSummary"));
@@ -340,7 +340,7 @@ public class OoConnector {
         return jsonArray;
     }
 
-    private JSONObject fetchObject(String strUrl) {
+    private JSONObject fetchJSONObject(String strUrl) {
         HttpURLConnection connection = openConnection(strUrl);
         Scanner scanner = new Scanner(getInputStream(connection));
         String jsonString = scanner.useDelimiter("\\A").next();
@@ -359,5 +359,27 @@ public class OoConnector {
         }
 
         return jsonObj;
+    }
+
+    private JSONArray fetchJSONArray(String strUrl) {
+        JSONArray jsonArray = null;
+
+        HttpURLConnection connection = openConnection(strUrl);
+        Scanner scanner = new Scanner(getInputStream(connection));
+        String jsonString = scanner.useDelimiter("\\A").next();
+
+        try {
+            jsonArray = new JSONArray(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            connection.disconnect();
+        }
+
+        if (jsonArray != null) {
+            Log.i(TAG, jsonArray.toString());
+        }
+
+        return jsonArray;
     }
 }
