@@ -14,7 +14,12 @@ import android.widget.TextView;
 
 import com.hpe.oo.android.OOConnector;
 import com.hpe.oo.android.model.FlowInput;
+import com.hpe.oo.android.model.RunLog;
 import com.hpe.oo.android.oo.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +29,18 @@ import java.util.List;
  */
 public class InputListFragment extends Fragment {
         private static final String  TAG = "InputListFragment";
+        private static final String  ARG_EXTRA_RUN_ID = "run_id";
 
-        private static Long        sRunId;
         private List<FlowInput>    mFlowInputs;
         private RecyclerView       mInputRecyclerView;
-        private OOConnector        mOOConnector;
 
         public static InputListFragment newInstance(Long runId) {
             Bundle args                         = new Bundle();
+            args.putSerializable(ARG_EXTRA_RUN_ID, runId);
+
             InputListFragment inputListFragment = new InputListFragment();
             inputListFragment.setArguments(args);
-            sRunId = runId;
+
             return inputListFragment;
         }
 
@@ -43,7 +49,9 @@ public class InputListFragment extends Fragment {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
             setHasOptionsMenu(true);
-            mOOConnector = OOConnector.newInstance();
+
+            Long runId = (Long) getArguments().getSerializable(ARG_EXTRA_RUN_ID);
+            new FetchFlowInputsTask(runId).execute();
         }
 
         @Override
@@ -51,9 +59,7 @@ public class InputListFragment extends Fragment {
             View view = inflater.inflate(R.layout.fragment_input_list, container, false);
             mInputRecyclerView = (RecyclerView) view.findViewById(R.id.input_recycler_view);
             mInputRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
             updateUI();
-
             return view;
         }
 
@@ -65,7 +71,6 @@ public class InputListFragment extends Fragment {
         }
 
         private void updateUI() {
-            new FetchFlowInputsTask().execute();
         }
 
         private class FlowInputHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -123,18 +128,29 @@ public class InputListFragment extends Fragment {
         }
 
         class FetchFlowInputsTask extends AsyncTask<Void, Void, List<FlowInput>> {
-            public FetchFlowInputsTask() {
+            private OOConnector        mOOConnector;
+            private Long               mRunId;
+
+            public FetchFlowInputsTask(Long runId) {
+                mRunId = runId;
+                mOOConnector = OOConnector.newInstance();
             }
 
             @Override
             protected List<FlowInput> doInBackground(Void... params) {
-                //TODO: Remove dummy inputs generation
                 List<FlowInput> myFlowInputs = new ArrayList<>();
-                for (int i = 0; i < 10; ++i) {
+
+                RunLog execLog = mOOConnector.getRunExecutionLog(mRunId);
+                JSONArray inputs = execLog.getInputs();
+                for (int i = 0; i < inputs.length(); ++i) {
                     FlowInput myFlowInput = new FlowInput();
-                    myFlowInput.setName("Input " + i);
-                    myFlowInput.setLabel("Label " + i);
-                    myFlowInput.setValue(Integer.toString(i));
+                    try {
+                        JSONObject jsonObject = (JSONObject) inputs.get(i);
+                        myFlowInput.setName(jsonObject.getString("name"));
+                        myFlowInput.setValue(jsonObject.getString("value"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     myFlowInputs.add(myFlowInput);
                 }
 

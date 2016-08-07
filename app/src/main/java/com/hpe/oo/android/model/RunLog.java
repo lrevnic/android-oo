@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * Created by revnic on 7/23/2016.
  */
-public class RunExecutionLog {
+public class RunLog {
     private JSONObject  mExecutionSummary;
     private JSONArray   mInputs;
     private JSONObject  mOutputs;

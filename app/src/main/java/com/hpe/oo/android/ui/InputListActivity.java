@@ -10,22 +10,22 @@ import com.hpe.oo.android.model.Run;
 
 public class InputListActivity extends SingleFragmentActivity {
     private static final String EXTRA_RUN_ID = "com.hpe.oo.android.ui.run_id";
-    private Long mRunId;
-
-    @Override
-    protected Fragment createFragment() {
-        return InputListFragment.newInstance(mRunId);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        mRunId = getIntent().getLongExtra(EXTRA_RUN_ID, 0);
-    }
 
     public static Intent newIntent(Context packageContext, Long runId) {
         Intent i = new Intent(packageContext, InputListActivity.class);
         i.putExtra(EXTRA_RUN_ID, runId);
         return i;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
+
+    @Override
+    protected Fragment createFragment() {
+        Long runId  = (Long) getIntent().getSerializableExtra(EXTRA_RUN_ID);
+        return InputListFragment.newInstance(runId);
+    }
+
 }
