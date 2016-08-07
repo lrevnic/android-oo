@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hpe.oo.android.OoConnector;
+import com.hpe.oo.android.OOConnector;
 import com.hpe.oo.android.model.Flow;
 import com.hpe.oo.android.oo.R;
 import com.hpe.oo.android.utils.QueryPreferences;
@@ -28,7 +28,7 @@ public class FlowLaunchFragment extends Fragment {
     private List<Flow>           mFlows;
     private RecyclerView         mFlowRecyclerView;
 
-    private static OoConnector   sMOoConnector;
+    private static OOConnector sMOOConnector;
 
     public static FlowLaunchFragment newInstance() {
         Bundle args                           = new Bundle();
@@ -42,7 +42,7 @@ public class FlowLaunchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        sMOoConnector = OoConnector.newInstance();
+        sMOOConnector = OOConnector.newInstance();
     }
 
     @Override
@@ -179,9 +179,9 @@ public class FlowLaunchFragment extends Fragment {
         @Override
         protected List<Flow> doInBackground(Void... params) {
             if (mQuery == null || mQuery.isEmpty()) {
-                return sMOoConnector.getAllFlows();
+                return sMOOConnector.getAllFlows();
             } else {
-                return sMOoConnector.searchFlows(mQuery);
+                return sMOOConnector.searchFlows(mQuery);
             }
         }
 

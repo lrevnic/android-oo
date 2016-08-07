@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hpe.oo.android.OoConnector;
+import com.hpe.oo.android.OOConnector;
 import com.hpe.oo.android.model.RunStatus;
 import com.hpe.oo.android.utils.QueryPreferences;
 import com.hpe.oo.android.model.Run;
@@ -32,10 +32,9 @@ import java.util.TimeZone;
 public class RunListFragment extends Fragment {
     private static final String  TAG = "RunListFragment";
 
-    private List<Run>      mRuns;
-    private RecyclerView   mRunRecyclerView;
-
-    private OoConnector     sMOoConnector;
+    private List<Run>       mRuns;
+    private RecyclerView    mRunRecyclerView;
+    private OOConnector mOOConnector;
 
     public static RunListFragment newInstance() {
         Bundle args                     = new Bundle();
@@ -49,7 +48,7 @@ public class RunListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        sMOoConnector = OoConnector.newInstance();
+        mOOConnector = OOConnector.newInstance();
     }
 
     @Override
@@ -136,6 +135,7 @@ public class RunListFragment extends Fragment {
 
         public RunHolder(View itemView) {
             super(itemView);
+
             itemView.setOnClickListener(this);
 
             mNameTextView = (TextView) itemView.findViewById(R.id.run_list_item_nameTextView);
@@ -192,13 +192,12 @@ public class RunListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = RunPagerActivity.newIntent(getActivity(), mRun.getId());
+            Intent intent = InputListActivity.newIntent(getActivity(), mRun.getId());
             startActivity(intent);
         }
     }
 
     private class RunAdapter extends RecyclerView.Adapter<RunHolder> {
-        private List<Run> mRuns;
         public RunAdapter(List<Run> runs) {
             mRuns = runs;
         }
@@ -232,9 +231,9 @@ public class RunListFragment extends Fragment {
         @Override
         protected List<Run> doInBackground(Void... params) {
             if (mQuery == null || mQuery.isEmpty()) {
-                return sMOoConnector.getAllRuns();
+                return mOOConnector.getAllRuns();
             } else {
-                return sMOoConnector.searchRuns(mQuery);
+                return mOOConnector.searchRuns(mQuery);
             }
         }
 

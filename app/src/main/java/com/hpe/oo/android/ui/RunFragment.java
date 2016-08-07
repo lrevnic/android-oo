@@ -5,31 +5,25 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hpe.oo.android.OoConnector;
+import com.hpe.oo.android.OOConnector;
 import com.hpe.oo.android.model.Run;
 import com.hpe.oo.android.model.RunExecutionLog;
 import com.hpe.oo.android.oo.R;
-
-import java.util.List;
-import java.util.Random;
 
 public class RunFragment extends Fragment {
     private static final String  TAG = "RunFragment";
 
     private Run                 mRun;
     private RunExecutionLog     mRunExecutionLog;
-    private OoConnector         mOoConnector;
+    private OOConnector mOOConnector;
 
     private EditText            mRunNameEditText;
 
@@ -46,10 +40,10 @@ public class RunFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOoConnector = OoConnector.newInstance();
+        mOOConnector = OOConnector.newInstance();
 
         Long id = (Long) getArguments().getSerializable(RunPagerActivity.EXTRA_RUN_ID);
-        mRun = mOoConnector.getRun(id);
+        mRun = mOOConnector.getRun(id);
         new FetchRunExecutionLogTask(id).execute();
     }
 
@@ -113,7 +107,7 @@ public class RunFragment extends Fragment {
 
         @Override
         protected RunExecutionLog doInBackground(Void... params) {
-            return mOoConnector.getRunExecutionLog(mRunId);
+            return mOOConnector.getRunExecutionLog(mRunId);
         }
 
         @Override

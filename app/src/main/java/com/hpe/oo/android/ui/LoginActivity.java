@@ -4,14 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -40,9 +38,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hpe.oo.android.OOConnector;
 import com.hpe.oo.android.utils.AsyncResponse;
 import com.hpe.oo.android.oo.R;
-import com.hpe.oo.android.OoConnector;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -338,8 +336,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            OoConnector ooConnector = OoConnector.newInstance();
-            return ooConnector.login(mEndpoint, mEmail, mPassword);
+            OOConnector lOOConnector = OOConnector.newInstance();
+            return lOOConnector.login(mEndpoint, mEmail, mPassword);
         }
 
         @Override
